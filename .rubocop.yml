@@ -16,6 +16,15 @@ AllCops:
 Rails:
   Enabled: true
 
+# Layout
+Layout/LineLength:
+  Enabled: false
+
+# Style
 # 日本語でのコメントを許可
 Style/AsciiComments:
+  Enabled: false
+
+# classの行頭にクラスに関するコメントを書かなくても良い
+Style/Documentation:
   Enabled: false
