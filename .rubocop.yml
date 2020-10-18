@@ -20,6 +20,16 @@ Rails:
 Layout/LineLength:
   Enabled: false
 
+# Metrics
+Metrics/AbcSize:
+  Exclude:
+    - 'db/migrate/**/*.rb'
+    - 'app/controllers/application_controller.rb'
+
+Metrics/MethodLength:
+  Exclude:
+    - 'db/migrate/**/*.rb'
+
 # Style
 # 日本語でのコメントを許可
 Style/AsciiComments:
