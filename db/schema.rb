@@ -10,7 +10,31 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20_201_018_110_318) do
+ActiveRecord::Schema.define(version: 20_201_123_111_104) do
+  create_table 'content_tags', options: 'ENGINE=InnoDB DEFAULT CHARSET=utf8mb4', force: :cascade do |t|
+    t.bigint 'content_id', null: false
+    t.bigint 'tag_id', null: false
+    t.datetime 'created_at', precision: 6, null: false
+    t.datetime 'updated_at', precision: 6, null: false
+    t.index %w[content_id tag_id], name: 'index_content_tags_on_content_id_and_tag_id', unique: true
+    t.index ['content_id'], name: 'index_content_tags_on_content_id'
+    t.index ['tag_id'], name: 'index_content_tags_on_tag_id'
+  end
+
+  create_table 'contents', options: 'ENGINE=InnoDB DEFAULT CHARSET=utf8mb4', force: :cascade do |t|
+    t.bigint 'curator_id', null: false
+    t.integer 'type', default: 0, null: false
+    t.text 'url'
+    t.string 'title', default: '', null: false
+    t.text 'comment'
+    t.integer 'emotion', default: 0, null: false
+    t.integer 'star', default: 0, null: false
+    t.datetime 'viewed_at'
+    t.datetime 'created_at', precision: 6, null: false
+    t.datetime 'updated_at', precision: 6, null: false
+    t.index ['curator_id'], name: 'index_contents_on_curator_id'
+  end
+
   create_table 'curators', options: 'ENGINE=InnoDB DEFAULT CHARSET=utf8mb4', force: :cascade do |t|
     t.string 'email', default: '', null: false
     t.string 'encrypted_password', default: '', null: false
@@ -39,4 +63,18 @@ ActiveRecord::Schema.define(version: 20_201_018_110_318) do
     t.index ['reset_password_token'], name: 'index_curators_on_reset_password_token', unique: true
     t.index ['unlock_token'], name: 'index_curators_on_unlock_token', unique: true
   end
+
+  create_table 'tags', options: 'ENGINE=InnoDB DEFAULT CHARSET=utf8mb4', force: :cascade do |t|
+    t.bigint 'curator_id', null: false
+    t.string 'name', default: '', null: false
+    t.datetime 'created_at', precision: 6, null: false
+    t.datetime 'updated_at', precision: 6, null: false
+    t.index %w[curator_id name], name: 'index_tags_on_curator_id_and_name', unique: true
+    t.index ['curator_id'], name: 'index_tags_on_curator_id'
+  end
+
+  add_foreign_key 'content_tags', 'contents'
+  add_foreign_key 'content_tags', 'tags'
+  add_foreign_key 'contents', 'curators'
+  add_foreign_key 'tags', 'curators'
 end
